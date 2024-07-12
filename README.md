@@ -32,7 +32,9 @@ class User(BaseModel):
     name: str
     age: int
 
-model_name="gpt-3.5-turbo"
+model_name="gpt-3.5-turbo" # for OpenAI
+# model_name="claude-3-haiku-20240307" # uncomment for Anthropic
+
 # Initialize the client
 client = get_client(model=model_name)
 
@@ -54,38 +56,30 @@ print(f"Name: {response.name}, Age: {response.age}")
 
 ## Supported Models
 
-OpenAI Models:
-- GPT-3.5-Turbo (various versions)
-- GPT-4 (various versions)
-- Davinci
-- Curie
+### Anthropic Models:
+- CLAUDE_3_OPUS_20240229 = "claude-3-opus-20240229"
+- CLAUDE_3_HAIKU_20240307 = "claude-3-haiku-20240307"
+- CLAUDE_3_5_SONNET_20240620 = "claude-3-5-sonnet-20240620"
+- CLAUDE_3_SONNET_20240229 = "claude-3-sonnet-20240229"
 
-Anthropic Models:
-- Claude-3-Opus
-- Claude-3-Haiku
-- Claude-3.5-Sonnet
+### OpenAI Models:
+- GPT_3_5_TURBO_0125 = "gpt-3.5-turbo-0125"
+- GPT_3_5_TURBO = "gpt-3.5-turbo"
+- GPT_3_5_TURBO_INSTRUCT = "gpt-3.5-turbo-instruct"
+- GPT_4 = "gpt-4"
+- GPT_4O = "gpt-4o"
+- GPT_4O_2024_05_13 = "gpt-4o-2024-05-13"
+- DAVINCI = "davinci"
+- CURIE = "curie"
 
 ## Testing
 
 The package includes pytest-based tests for both OpenAI and Anthropic clients. To run the tests:
 
-pytest path/to/test_file.py
+```make test```
 
 ## Dependencies
 
 - `instructor`
-- `openai` (optional, for OpenAI models)
 - `anthropic` (optional, for Anthropic models)
 - `pydantic`
-
-## License
-
-[Your chosen license]
-
-## Contributing
-
-[Your contribution guidelines]
-
-## Support
-
-[Your support information]
