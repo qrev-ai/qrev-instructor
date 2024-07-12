@@ -5,6 +5,7 @@ docker_staging*
 
 ## System
 .env
+.config.toml
 
 ## Python
 *.py[co]
