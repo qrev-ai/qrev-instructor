@@ -1,6 +1,6 @@
 # QRev Instructor
 
-QRev Instructor is a Python wrapper around the `instructor` module, providing a unified interface for working with different language models from OpenAI and Anthropic.
+QRev Instructor is a Python wrapper around the [`instructor`](https://github.com/jxnl/instructor) module, providing a unified interface for working with different language models from OpenAI and Anthropic.
 
 ## Features
 
