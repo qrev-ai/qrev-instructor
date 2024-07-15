@@ -1,5 +1,5 @@
 from enum import StrEnum
-from typing import Union
+from typing import Any
 
 
 class CaseInsensitiveEnum(StrEnum):
@@ -18,28 +18,30 @@ class APIType(CaseInsensitiveEnum):
     OPENAI = "OpenAI"
 
 
-class APIModel(CaseInsensitiveEnum): 
+class APIModel(CaseInsensitiveEnum):
     def __str__(self):
         return self.value
-    
+
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}.{self.name}"
-    
+        return self.value
+
     @classmethod
-    def from_string(cls, value: str) -> 'APIModel':
+    def from_string(cls, value: str) -> "APIModel":
         return cls(value)
-    
+
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-    
-    @classmethod
-    def validate(cls, v: Union[str, 'APIModel']) -> 'APIModel':
-        if isinstance(v, cls):
-            return v
-        if isinstance(v, str):
-            return cls.from_string(v)
-        raise ValueError(f"Invalid value for {cls.__name__}: {v}")
+    def __get_pydantic_core_schema__(cls, _source_type: Any, _handler: Any):
+        from pydantic_core import core_schema
+
+        def validate(value):
+            if isinstance(value, cls):
+                return value
+            if isinstance(value, str):
+                return cls(value)
+            raise ValueError(f"Invalid value for {cls.__name__}: {value}")
+
+        return core_schema.no_info_plain_validator_function(validate)
+
 
 class AnthropicModel(APIModel):
     CLAUDE_3_OPUS_20240229 = "claude-3-opus-20240229"
