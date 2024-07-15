@@ -5,6 +5,7 @@ if __name__ == "__main__":
 from typing import Any
 
 from anthropic import Anthropic
+from openai import OpenAI
 from pi_conf import load_config
 from pydantic import BaseModel
 
@@ -18,18 +19,6 @@ load_config().to_env()
 class User(BaseModel):
     name: str
     age: int
-
-
-@pytest.fixture
-def openai_client_model():
-    model = "gpt-3.5-turbo"
-    return get_client(model=model), model
-
-
-@pytest.fixture
-def anthropic_client_model():
-    model = "claude-3-haiku-20240307"
-    return get_client(model=model), model
 
 
 def get_create_params(model: str, include_response_model: bool = True) -> dict[str, Any]:
@@ -46,6 +35,45 @@ def get_create_params(model: str, include_response_model: bool = True) -> dict[s
     if include_response_model:
         d["response_model"] = User
     return d
+
+
+@pytest.fixture
+def openai_model():
+    return "gpt-3.5-turbo"
+
+
+@pytest.fixture
+def anthropic_model():
+    return "claude-3-haiku-20240307"
+
+
+@pytest.fixture
+def openai_client_model(openai_model):
+    return get_client(model=openai_model), openai_model
+
+
+@pytest.fixture
+def anthropic_client_model(anthropic_model):
+    return get_client(model=anthropic_model), anthropic_model
+
+
+def test_anthropic_from_client(anthropic_model):
+    client = get_client(model=anthropic_model, client=Anthropic())
+    # Create a response using the client
+    resp = client.messages.create(**get_create_params(anthropic_model))
+
+    # Assertions to check the response
+    assert isinstance(resp, User), "Response is not an instance of User"
+    assert resp.name == "Jason", "The extracted name is incorrect"
+    assert resp.age == 25, "The extracted age is incorrect"
+
+
+def test_anthropic_from_wrong_client(anthropic_model, openai_model):
+    """Trying to use the wrong client with the anthropic model"""
+    with pytest.raises(ValueError):
+        get_client(model=anthropic_model, client=OpenAI())
+    with pytest.raises(ValueError):
+        get_client(model=openai_model, client=Anthropic())
 
 
 def test_anthropic_extract_user_info_messages(openai_client_model):
