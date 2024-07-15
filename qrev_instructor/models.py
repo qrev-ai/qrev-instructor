@@ -1,4 +1,5 @@
 from enum import StrEnum
+from typing import Union
 
 
 class CaseInsensitiveEnum(StrEnum):
@@ -17,8 +18,28 @@ class APIType(CaseInsensitiveEnum):
     OPENAI = "OpenAI"
 
 
-class APIModel(CaseInsensitiveEnum): ...
-
+class APIModel(CaseInsensitiveEnum): 
+    def __str__(self):
+        return self.value
+    
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}.{self.name}"
+    
+    @classmethod
+    def from_string(cls, value: str) -> 'APIModel':
+        return cls(value)
+    
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+    
+    @classmethod
+    def validate(cls, v: Union[str, 'APIModel']) -> 'APIModel':
+        if isinstance(v, cls):
+            return v
+        if isinstance(v, str):
+            return cls.from_string(v)
+        raise ValueError(f"Invalid value for {cls.__name__}: {v}")
 
 class AnthropicModel(APIModel):
     CLAUDE_3_OPUS_20240229 = "claude-3-opus-20240229"
