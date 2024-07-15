@@ -3,7 +3,7 @@ from typing import Any, Callable, Optional
 
 import instructor
 
-from qrev_instructor.models import AnthropicModels, APIModel, APIType, OpenAIModels
+from qrev_instructor.models import AnthropicModel, APIModel, APIType, OpenAIModel
 
 
 ## Load the APIs
@@ -43,14 +43,14 @@ def get_apis() -> dict[APIType, FuncApiWrapper]:
 
 def get_api_service(model_name: str) -> APIType:
     model_name = model_name.lower()
-    if model_name in AnthropicModels._value2member_map_:
+    if model_name in AnthropicModel._value2member_map_:
         return APIType.ANTHROPIC
-    elif model_name in OpenAIModels._value2member_map_:
+    elif model_name in OpenAIModel._value2member_map_:
         return APIType.OPENAI
     model_name = model_name.replace("-", "_").replace(".", "_").upper()
-    if model_name in AnthropicModels._member_names_:
+    if model_name in AnthropicModel._member_names_:
         return APIType.ANTHROPIC
-    elif model_name in OpenAIModels._member_names_:
+    elif model_name in OpenAIModel._member_names_:
         return APIType.OPENAI
     else:
         raise NotImplementedError(f"Model {model_name} not supported")
