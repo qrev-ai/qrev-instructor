@@ -1,3 +1,5 @@
+install::
+	poetry install
 
 test::
 	pytest tests
