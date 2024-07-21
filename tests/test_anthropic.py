@@ -9,6 +9,8 @@ from anthropic import Anthropic
 from pi_conf import load_config
 from pydantic import BaseModel
 
+from qrev_instructor import AnthropicModel
+
 load_config().to_env()
 
 
@@ -16,12 +18,13 @@ class User(BaseModel):
     name: str
     age: int
 
+
 def test_anthropic_extract_user_info():
     client = instructor.from_anthropic(Anthropic())
 
     # note that client.chat.completions.create will also work
     resp = client.messages.create(
-        model="claude-3-opus-20240229",
+        model=AnthropicModel.CLAUDE_3_HAIKU_20240307,
         max_tokens=1024,
         messages=[
             {
