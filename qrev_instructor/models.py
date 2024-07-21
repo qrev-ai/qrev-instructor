@@ -56,6 +56,7 @@ class OpenAIModel(APIModel):
     GPT_3_5_TURBO_INSTRUCT = "gpt-3.5-turbo-instruct"
     GPT_4 = "gpt-4"
     GPT_4O = "gpt-4o"
+    GPT_4O_MINI = "gpt-4o-mini"
     GPT_4O_2024_05_13 = "gpt-4o-2024-05-13"
     DAVINCI = "davinci"
     CURIE = "curie"
