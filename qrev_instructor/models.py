@@ -17,6 +17,16 @@ class APIType(CaseInsensitiveEnum):
     ANTHROPIC = "Anthropic"
     OPENAI = "OpenAI"
 
+    @staticmethod
+    def from_model(model: str) -> "APIType":
+        model = model.lower()
+
+        if model in AnthropicModel.__members__.values():
+            return APIType.ANTHROPIC
+        if model in OpenAIModel.__members__.values():
+            return APIType.OPENAI
+        return APIType.OTHER
+
 
 class APIModel(CaseInsensitiveEnum):
     def __str__(self):
@@ -51,6 +61,8 @@ class AnthropicModel(APIModel):
 
 
 class OpenAIModel(APIModel):
+    DAVINCI = "davinci"
+    CURIE = "curie"
     GPT_3_5_TURBO_0125 = "gpt-3.5-turbo-0125"
     GPT_3_5_TURBO = "gpt-3.5-turbo"
     GPT_3_5_TURBO_INSTRUCT = "gpt-3.5-turbo-instruct"
@@ -58,5 +70,5 @@ class OpenAIModel(APIModel):
     GPT_4O = "gpt-4o"
     GPT_4O_MINI = "gpt-4o-mini"
     GPT_4O_2024_05_13 = "gpt-4o-2024-05-13"
-    DAVINCI = "davinci"
-    CURIE = "curie"
+    O1_MINI = "o1-mini"
+    O1_PREVIEW = "o1-preview"
