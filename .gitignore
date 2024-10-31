@@ -1,4 +1,5 @@
 ## App
+*.lock
 
 ## Staging Directories
 docker_staging*
